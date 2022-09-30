@@ -30,9 +30,9 @@ __main		LDR		R0, =SYSCTL_RCGC2_R		; 	*R0 = SYSCTL_RCGC2_R
 		
 			;GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY
 			
-			;LDR		R0, =GPIO_PORTF_LOCK_R
-			;LDR		R1, =GPIO_LOCK_KEY
-			;STR		R1, [R0] 
+			LDR		R0, =GPIO_PORTF_LOCK_R
+			LDR		R1, =GPIO_LOCK_KEY
+			STR		R1, [R0] 
 			
 			; GPIO_PORTF_CR_R = 0xFF
 			; Habilita la escritura en los registros del PORTF

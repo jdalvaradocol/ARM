@@ -24,9 +24,9 @@ __main		LDR		R0, =SYSCTL_RCGC2_R		; 	*R0 = SYSCTL_RCGC2_R
 			MOV		R2, #0x20				; 	R2 = 0x02	
 			ORR		R1, R1, R2				;	R1 = R1 (or) R2		
 			STR		R1, [R0]				;	*R0 = R1
-			;NOP								; 	DELAY 1 CICLO
-			;NOP								; 	DELAY 1 CICLO
-			;NOP								; 	DELAY 1 CICLO
+			NOP								; 	DELAY 1 CICLO
+			NOP								; 	DELAY 1 CICLO
+			NOP								; 	DELAY 1 CICLO
 		
 			;GPIO_PORTF_LOCK_R = GPIO_LOCK_KEY
 			
