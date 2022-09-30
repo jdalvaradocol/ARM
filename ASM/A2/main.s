@@ -8,19 +8,19 @@ DATA	EQU	 	0x20000000
 		EXPORT  __main
 				
 __main
-		LDR 	R0, =DATA          
+		LDR 		R0, =DATA          
 LOOP
 		ADD		R1, #0x01          
 		STR		R1, [R0]
 
 		CMP		R1, #10
 		BEQ		SI10		
-		B   	LOOP
+		B   		LOOP
 
 SI10   	
 		BFC		R1, #0, #4
 		CBZ		R1, LOOPA
-		B   	SI10
+		B   		SI10
 
 
 LOOPA
