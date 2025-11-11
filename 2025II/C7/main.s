@@ -1,0 +1,227 @@
+
+; 0x40022800 - 0x40022BFF GPIOK
+; 0x40022400 - 0x400227FF GPIOJ
+; 0x40022000 - 0x400223FF GPIOI
+; 0x40021C00 - 0x40021FFF GPIOH
+; 0x40021800 - 0x40021BFF GPIOG
+; 0x40021400 - 0x400217FF GPIOF
+; 0x40021000 - 0x400213FF GPIOE
+; 0x40020C00 - 0x40020FFF GPIOD
+; 0x40020800 - 0x40020BFF GPIOC
+; 0x40020400 - 0x400207FF GPIOB
+; 0x40020000 - 0x400203FF GPIOA
+
+;------------------------------------------
+
+; 0x40023800 - 0x4002 3BFF RCC
+; AHB1 Address offset: 0x30
+; RCC_AHB1 0x40023800 + 0x30
+; RCC_AHB1 = 0x40023830
+
+RCC_AHB1		EQU		0x40023830
+	
+;------------------------------------------
+
+; GPIOA base 0x40020000
+; GPIOA_MODER Address offset 0x00
+; GPIOA_MODER = 0x40020000 + 0x00
+
+GPIOA_MODER		EQU		0x40020000
+
+; GPIOA base 0x40020000
+; GPIOA_ODR Address offset 0x14
+; GPIOA_ODR = 0x40020000 + 0x14
+; GPIOA_ODR = 0x40020014
+
+GPIOA_ODR 		EQU		0x40020014
+
+; GPIOA base 0x40020000
+; GPIOA_IDR Address offset 0x10
+; GPIOA_IDR  = 0x40020000 + 0x10
+; GPIOA_IDR -> 0x40020010
+
+GPIOA_IDR 		EQU		0x40020010
+
+;---------------------------------------------------
+
+; GPIOB base 0x40020400
+; GPIOB_MODER Address offset:0x00
+; GPIOB_MODER = 0x40020400 
+
+GPIOB_MODER 	EQU		0x40020400
+
+; GPIOB base 0x40020400
+; GPIOB_ODR Address offset: 0x14
+; GPIOB_ODR = 0x40020414
+
+GPIOB_ODR 		EQU 	0x40020414
+
+; GPIOB base 0x40020400
+; GPIOB_IDR Address offset: 0x10
+; GPIOB_IDR = 0x40020410
+
+GPIOB_IDR 		EQU 	0x40020410
+
+;---------------------------------------------------
+	
+; GPIOC base 0x40020800
+; GPIOC_MODER Address offset 0x00
+; GPIOC_MODER = 0x40020800 + 0x00
+
+GPIOC_MODER		EQU		0x40020800
+
+; GPIOC base 0x40020800
+; GPIOC_ODR Address offset 0x14
+; GPIOC_ODR = 0x40020800 + 0x14
+; GPIOC_ODR = 0x40020814
+
+GPIOC_ODR 		EQU		0x40020814
+
+; GPIOC base 0x40020800
+; GPIOC_IDR Address offset 0x10
+; GPIOC_IDR  = 0x40020800 + 0x10
+; GPIOC_IDR -> 0x40020810
+
+GPIOC_IDR 		EQU		0x40020810
+
+;---------------------------------------------------
+	
+; GPIOD base 0x40020C00
+; GPIOD_MODER Address offset 0x00
+; GPIOD_MODER = 0x40020C00 + 0x00
+
+GPIOD_MODER		EQU		0x40020C00
+
+; GPIOD base 0x40020C00
+; GPIOD_ODR Address offset 0x14
+; GPIOD_ODR = 0x40020C00 + 0x14
+; GPIOD_ODR = 0x40020C14
+
+GPIOD_ODR 		EQU		0x40020C14
+
+; GPIOD base 0x40020C00
+; GPIOD_IDR Address offset 0x10
+; GPIOD_IDR  = 0x40020C00 + 0x10
+; GPIOD_IDR -> 0x40020C10
+
+GPIOD_IDR 		EQU		0x40020C10
+
+;------------------------------------------
+
+; GPIOE base 0x40021000
+; GPIOE_MODER Address offset:0x00
+; GPIOE_MODER = 0x40021000 
+
+GPIOE_MODER 	EQU		0x40021000
+
+; GPIOE base 0x40021000
+; GPIOE_ODR Address offset: 0x14
+; GPIOE_ODR = 0x40021014
+
+GPIOE_ODR 		EQU 	0x40021014
+
+; GPIOE base 0x40021000
+; GPIOE_IDR Address offset: 0x10
+; GPIOE_IDR = 0x40021010
+
+GPIOE_IDR 		EQU 	0x40021010
+	
+;------------------------------------------
+
+; GPIOF base 0x40021400
+; GPIOF_MODER Address offset:0x00
+; GPIOF_MODER = 0x40021400 
+
+GPIOF_MODER 	EQU		0x40021400
+
+; GPIOF base 0x40021400
+; GPIOF_ODR Address offset: 0x14
+; GPIOF_ODR = 0x40021414
+
+GPIOF_ODR 		EQU 	0x40021414
+
+; GPIOF base 0x40021400
+; GPIOF_IDR Address offset: 0x10
+; GPIOF_IDR = 0x40021410
+
+GPIOF_IDR 		EQU 	0x40021410	
+
+;------------------------------------------
+
+; GPIOG base 0x40021800
+; GPIOG_MODER Address offset:0x00
+; GPIOG_MODER = 0x40021800 
+
+GPIOG_MODER 	EQU		0x40021800
+
+; GPIOG base 0x40021800
+; GPIOG_ODR Address offset: 0x14
+; GPIOG_ODR = 0x40021814
+
+GPIOG_ODR 		EQU 	0x40021814
+
+; GPIOG base 0x40021800
+; GPIOG_IDR Address offset: 0x10
+; GPIOG_IDR = 0x40021810
+
+GPIOG_IDR 		EQU 	0x40021810
+
+;------------------------------------------
+
+				AREA	|.text|, CODE, READONLY, ALIGN = 2
+				ENTRY
+				EXPORT	__main
+					
+		
+__main			BL 		RUTINAA
+				BL 		RUTINAB
+				BL 		RUTINAC
+				BL 		RUTINAD
+				B		__main
+		
+RUTINAA			MOV		R1, LR
+				MOV		R0,#10
+				BL		DELAY_MS
+				MOV		R0,#20
+				BL		DELAY_MS
+				MOV		R0,#30
+				BL		DELAY_MS
+				MOV		LR, R1
+				BX		LR
+
+RUTINAB			MOV		R1, LR
+				MOV		R0,#30
+				BL		DELAY_MS
+				MOV		R0,#40
+				BL		DELAY_MS
+				MOV		R0,#50
+				BL		DELAY_MS
+				MOV		LR, R1
+				BX		LR
+
+RUTINAC 		MOV		R1, LR
+				MOV		R0,#60
+				BL		DELAY_MS
+				MOV		R0,#70
+				BL		DELAY_MS
+				MOV		R0,#80
+				BL		DELAY_MS
+				MOV		LR, R1
+				BX		LR
+
+RUTINAD			MOV		R1, LR
+				MOV		R0,#90
+				BL		DELAY_MS
+				MOV		R0,#100
+				BL		DELAY_MS
+				MOV		R0,#110
+				BL		DELAY_MS
+				MOV		LR, R1
+				BX		LR
+
+DELAY_MS		MOV		R0,#500
+				BX		LR
+
+				ALIGN
+				END	
+				
