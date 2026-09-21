@@ -1,17 +1,7 @@
 #include "stm32f4xx_hal.h"
 #include "ST7920_parallel.h"
 #include "animacion.h"
-#include "teclado.h"
 #include <stdio.h>
-
-#define COLUMNA1    127
-#define COLUMNA2    255
-#define COLUMNA3    383
-#define COLUMNA4    511
-#define COLUMNA5    639
-#define COLUMNA6    767
-#define COLUMNA7    895
-#define COLUMNA8    1023 
 
 void SysTick_Handler(void)
 {
@@ -23,13 +13,6 @@ void MX_GPIO_Init(void);
 
 int main(void)
 {
-
-	// Variables para visluzalr el mensaje y guardar la tecla ingresada.
-	char buffer_count[17];
-	uint8_t tecla = 0;
-    uint8_t IM1[1024] = frame_0;
-    uint8_t IM2[1024] = {0};
-    
     HAL_Init();
     SystemClock_Config();
     MX_GPIO_Init();
@@ -37,46 +20,72 @@ int main(void)
     // 1. Inicializar pantalla ST7920
     ST7920_Init();
 
+    // -------------------------------------------------------------
+    // ETAPA 1: Dibujo de Primitivas Geométricas (Círculos y Rectángulo)
+    // -------------------------------------------------------------
+    ST7920_GraphicMode(1);
+    ST7920_ClearBuffer();
+
+    // Marco exterior de la pantalla (128x64)
+    DrawRectangle(0, 0, 127, 63);
+
+    // Círculo a la izquierda
+    DrawCircle(32, 32, 18);
+
+    // Rectángulo relleno a la derecha
+    DrawFilledRectangle(65, 18, 50, 28);
+
+    // Renderizar buffer en la pantalla y esperar 3 segundos
+    ST7920_Update();
+    HAL_Delay(3000);
+
+    // -------------------------------------------------------------
+	// ETAPA 2: Reproducción del GIF Invertido (10 Repeticiones)
+	// -------------------------------------------------------------
+	uint8_t frame_invertido[1024];
+
+	for (int rep = 0; rep < 10; rep++)
+	{
+		for (int i = 0; i < GIF_TOTAL_FRAMES; i++)
+		{
+			// 1. Invertir byte a byte el frame actual de la Flash hacia la RAM
+			for (int b = 0; b < 1024; b++)
+			{
+				frame_invertido[b] = ~gif_frames[i][b];
+			}
+
+			// 2. Pasar la dirección del arreglo completo (sin corchetes [i])
+			ST7920_DrawBitmap(frame_invertido);
+			HAL_Delay(100);
+		}
+	}
+
+    // -------------------------------------------------------------
+    // ETAPA 3: Modo Texto con Contador Dinámico
+    // -------------------------------------------------------------
+    // Desactivar modo gráfico y limpiar pantalla
     ST7920_GraphicMode(0);
     ST7920_Clear();
 
-	// Mensaje Estático Inicial
-	ST7920_SendString(0, 0, "TECLADO 4x4");
+    // Mensaje Estático Inicial
+    ST7920_SendString(0, 0, "ANIMACION OK!");
+    ST7920_SendString(1, 0, "SISTEMA LISTO");
+    ST7920_SendString(2, 0, "ESTADO: ACTIVO");
 
-    // 128 x 64
-    //   0  ....    127
-    // 128  ....    255
-    // 256  ....    383
-    // 384  ....    511
-    // 512  ....    639
-    // 640  ....    767
-    // 768  ....    895
-    // 896  ....   1023
-    
-	while (1)
-	{
+    // Variables para el contador
+    uint32_t contador = 0;
+    char buffer_count[17];
 
-        for(int i = 0;i < 127; i++)
-        {
-            IM2(COLUMNA1-i) = IM1(COLUMNA1-1+i);
-            IM2(COLUMNA2-i) = IM1(COLUMNA2-1+i);
-            IM2(COLUMNA3-i) = IM1(COLUMNA3-1+i);
-            IM2(COLUMNA4-i) = IM1(COLUMNA4-1+i);
-            IM2(COLUMNA5-i) = IM1(COLUMNA5-1+i);
-            IM2(COLUMNA6-i) = IM1(COLUMNA6-1+i);
-            IM2(COLUMNA7-i) = IM1(COLUMNA7-1+i);
-            IM2(COLUMNA8-i) = IM1(COLUMNA8-1+i);
-        }
+    while (1)
+    {
+        // Formatear y actualizar únicamente la Fila 3
+        snprintf(buffer_count, sizeof(buffer_count), "CONTEO: %05lu", contador);
+        ST7920_SendString(3, 0, buffer_count);
 
-
-		tecla = teclado();
-		// Formatear y actualizar únicamente la Fila 3
-		snprintf(buffer_count, sizeof(buffer_count), "Tecla: %02u", tecla);
-		ST7920_SendString(2, 0, buffer_count);
-
-		HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0); // Toggle LED verde NUCLEO
-     }
-
+        contador++;
+        HAL_GPIO_TogglePin(GPIOB, GPIO_PIN_0); // Toggle LED verde NUCLEO
+        HAL_Delay(500);
+    }
 }
 
 void MX_GPIO_Init(void)
@@ -87,15 +96,6 @@ void MX_GPIO_Init(void)
     __HAL_RCC_GPIOB_CLK_ENABLE();
     __HAL_RCC_GPIOC_CLK_ENABLE();
     __HAL_RCC_GPIOD_CLK_ENABLE();
-    __HAL_RCC_GPIOE_CLK_ENABLE();
-    __HAL_RCC_GPIOF_CLK_ENABLE();
-
-    // LED verde de estado (PB0)
-    GPIO_InitStruct.Pin = GPIO_PIN_0;
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
     // Configurar Puerto C: RS (PC9), RW (PC10), E (PC11)
     GPIO_InitStruct.Pin = RS_PIN | RW_PIN | E_PIN;
@@ -110,26 +110,13 @@ void MX_GPIO_Init(void)
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_MEDIUM;
     HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-    
-    // Columnas 1 a 4 de salida (C1 (PE2), C2 (PE4), C3 (PE5), C4 (PE6))
-    GPIO_InitStruct.Pin = GPIO_PIN_2 | GPIO_PIN_4 | GPIO_PIN_5 | GPIO_PIN_6;
+
+    // LED verde de estado (PB0)
+    GPIO_InitStruct.Pin = GPIO_PIN_0;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_NOPULL;
     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-    // Filas 1 de entrada (F1 (PE3))
-    GPIO_InitStruct.Pin = GPIO_PIN_3;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-    // Filas 2 a 4 de entrada (F2 (PF8), F3 (PF7), F4 (PF9))
-    GPIO_InitStruct.Pin = GPIO_PIN_7 | GPIO_PIN_8 | GPIO_PIN_9;
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-    HAL_GPIO_Init(GPIOF, &GPIO_InitStruct);
-
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 }
 
 void SystemClock_Config(void)
