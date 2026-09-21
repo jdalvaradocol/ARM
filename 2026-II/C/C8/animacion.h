@@ -1,4 +1,3 @@
-/* Generado automáticamente desde mi_animacion.gif */
 #ifndef ANIMACION_H_
 #define ANIMACION_H_
 
