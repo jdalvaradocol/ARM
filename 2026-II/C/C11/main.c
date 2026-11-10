@@ -164,7 +164,7 @@ void FSM_Actualizar(void)
 // -----------------------------------------------------------------------------
 uint8_t LeerPulsadorConAntirrebote(void)
 {
-    static uint32_t ultimo_tiempo = 0;
+    static uint32_t ultimo_tiempo;
     static GPIO_PinState estado_anterior = GPIO_PIN_RESET;
     uint32_t tiempo_actual = HAL_GetTick();
 
