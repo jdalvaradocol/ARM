@@ -105,6 +105,8 @@ void FSM_Actualizar(void)
     {
         case ESTADO_APAGADO:
             HAL_GPIO_WritePin(LED1_PORT, LED1_PIN, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, GPIO_PIN_RESET);
+
             HAL_GPIO_WritePin(LED2_PORT, LED2_PIN, GPIO_PIN_RESET);
             HAL_GPIO_WritePin(LED3_PORT, LED3_PIN, GPIO_PIN_RESET);
             break;
